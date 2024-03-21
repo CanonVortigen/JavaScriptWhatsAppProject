@@ -240,7 +240,7 @@ export class WhatsAppController {
             this.closeAllMainPanel();
             this.el.panelDocumentPreview.addClass('open');
             this.el.panelDocumentPreview.css({
-                'height': 'calc(100% - 120px)'
+                'height': '100%'
             });
             this.el.inputDocument.click();
 
@@ -250,19 +250,34 @@ export class WhatsAppController {
 
             if (this.el.inputDocument.files.length) {
 
+                this.el.panelDocumentPreview.css({
+                    'height': '1%'
+                });
+
                 let file = this.el.inputDocument.files[0];
                 this._documentPreviewController = new DocumentPreviewController(file);
                 
                 this._documentPreviewController.getPreviewData().then(data => {
 
                     this.el.imgPanelDocumentPreview.src = data.src;
+                    this.el.imgPanelDocumentPreview.css({                        
+                        'height': 'calc(100% - 90px)'
+                    });
                     this.el.infoPanelDocumentPreview.innerHTML = data.info; 
                     this.el.imagePanelDocumentPreview.show();
                     this.el.filePanelDocumentPreview.hide();
 
+                    this.el.panelDocumentPreview.css({
+                        'height': '100%'
+                    });
+
                 }).catch(err => {
 
-                    // console.log(file.type);
+                    this.el.panelDocumentPreview.css({
+                        'height': '100%'
+                    });
+
+                    console.log(file.type);
 
                     switch (file.type) {
 
@@ -280,7 +295,7 @@ export class WhatsAppController {
                         case 'application/vnd.ms-powerpoint':
                         case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
                             this.el.iconPanelDocumentPreview.classList.value = 'jcxhw icon-doc-ppt';
-                        break;
+                        break;                        
 
                         default:
                             this.el.iconPanelDocumentPreview.classList.value = 'jcxhw icon-doc-generic';
